@@ -8,6 +8,7 @@
     Company: Raindrops.dev
     Last Edit: 2022-09-22
     Version 0.1 Initial functional code
+    Mapping: https://docs.microsoft.com/en-us/powershell/microsoftgraph/azuread-msoline-cmdlet-map?view=graph-powershell-1.0
 #>
 
 #Requires -modules Microsoft.Graph.Authentication, Microsoft.Graph.Applications
