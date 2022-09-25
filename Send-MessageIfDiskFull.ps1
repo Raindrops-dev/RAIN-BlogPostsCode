@@ -63,7 +63,7 @@ $drives = Get-PSDrive -PSProvider FileSystem
 foreach ($drive in $drives) {
     $name = $drive.name
     $free = [int][math]::Round(($drive.free / ($drive.free + $drive.used) * 100))
-    if ($free -lt 30) {
+    if ($free -lt 10) {
         Write-Warning "Disk $name is full: $free %, sending email"
         #Sending email if disk is full
         $MessageParams = @{
