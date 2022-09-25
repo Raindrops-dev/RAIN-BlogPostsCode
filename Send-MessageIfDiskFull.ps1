@@ -8,6 +8,7 @@
     Company: Raindrops.dev
     Last Edit: 2022-09-22
     Version 0.1 Initial functional code
+    Version 0.2 Added support for Key Vault
 #>
 
 #Requires -PSEdition Desktop
