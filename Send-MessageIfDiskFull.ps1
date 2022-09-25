@@ -30,8 +30,13 @@ $AppSecret = $ConfigFile.AppSecret
 $EmailSender = $ConfigFile.EmailSender
 $EmailReceiver = $ConfigFile.EmailReceiver
 $tenantId = $ConfigFile.TenantID
+$KeyVaultName = $ConfigFile.KeyVaultName
+$KeyVaultSecretName = $ConfigFile.KeyVaultSecretName
 $ComputerName = $env:COMPUTERNAME
 
+#Getting the App Secret from keyvault through Managed Identity
+Login-AzAccount -Identity
+$AppSecret = Get-AzKeyVaultSecret -VaultName $KeyVaultName -Name $KeyVaultSecretName -AsPlainText
 
 # Construct URI and body needed for authentication
 $uri = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"

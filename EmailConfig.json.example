@@ -1,6 +1,8 @@
 {
     "AppID": "",
     "AppSecret": "",
+    "KeyVaultSecretName": "",
+    "KeyVaultName": "",
     "EmailSender": "",
     "EmailReceiver": "",
     "TenantID": ""
