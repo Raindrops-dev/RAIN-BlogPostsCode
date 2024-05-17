@@ -80,6 +80,9 @@ if ($InstalledFSLogixVersion -ne $FsLogixDownloadVersion) {
                 Write-Output "Update Completed. Checking the current version in the registry."
                 $AfterInstallVersion = Get-ChildItem -Path $RegPaths | Get-ItemProperty | Where-Object { $_.DisplayName -match 'Microsoft FSLogix Apps' } | Select-Object -ExpandProperty 'DisplayVersion' | Get-Unique
                 Write-Output "Version after install is $AfterInstallVersion"
+                Write-Output "Cleaning up installer files"
+                Remove-Item -Force $InstallerOutputfile
+                Remove-Item -Force -Recurse "$WorkingDirectory\$FsLogixDownloadFilenameWithoutExtension"
             }
             catch {
                 throw "FSLogix failed to install $_"
