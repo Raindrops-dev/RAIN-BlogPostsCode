@@ -19,7 +19,7 @@ Clear-Host
 $ErrorActionPreference = "Stop"
 
 #Setting Verbose Preference to have the output of the Write-Verbose code
-$VerbosePreference = "Continue"
+$VerbosePreference = "SilentlyContinue"
 
 #Preparing basic variables
 $WorkingDirectory = "C:\temp\fslogixclient"
@@ -35,7 +35,7 @@ $ErrorActionPreference = "SilentlyContinue"
 Stop-Transcript | out-null
 #Continuing
 $ErrorActionPreference = "Continue"
-Start-Transcript -path "$PSScriptRoot\Update-FsLogixClient-$dateandtime.log" -append
+Start-Transcript -path "$WorkingDirectory\Update-FsLogixClient-$dateandtime.log" -append
 $ProgressPreference = 'SilentlyContinue' 
 
 #Starting processing
