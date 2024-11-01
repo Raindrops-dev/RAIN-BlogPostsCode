@@ -10,7 +10,21 @@
     Company: Raindrops.dev
     Last Edit: 2022-09-18
     Version 0.1 Initial functional code
+    Version 0.2 Added parameters for working directory, logs directory and verbose preference. Implemented cleanup of files after install on suggestion (and code contribution) from @jonwbstr
 #>
+# Defining parameters
+[CmdletBinding()]
+Param(
+    #Setting Verbose Preference to have the output of the Write-Verbose code
+    [Parameter(Mandatory = $false)]
+    [string]$VerbosePreference = "Continue", #Continue to view Verbose messages, SilentlyContinue to hide them
+    # Setting the working directory for the script
+    [Parameter(Mandatory = $false)]
+    [string]$WorkingDirectory = "C:\temp\fslogixclient",
+    # Setting the directory where the logs will be saved
+    [Parameter(Mandatory = $false)]
+    [string]$LogsDirectory = $PSScriptRoot
+)
 
 #Clearing the Screen
 Clear-Host
@@ -18,11 +32,7 @@ Clear-Host
 #Setting Error Action preference to Stop to ensure the code stops in case of error
 $ErrorActionPreference = "Stop"
 
-#Setting Verbose Preference to have the output of the Write-Verbose code
-$VerbosePreference = "Continue"
-
 #Preparing basic variables
-$WorkingDirectory = "C:\temp\fslogixclient"
 $WDExists = Test-Path -Path $WorkingDirectory
 #Starting processing
 if (-not $WDExists) {
@@ -35,7 +45,7 @@ $ErrorActionPreference = "SilentlyContinue"
 Stop-Transcript | out-null
 #Continuing
 $ErrorActionPreference = "Continue"
-Start-Transcript -path "$PSScriptRoot\Update-FsLogixClient-$dateandtime.log" -append
+Start-Transcript -path "$LogsDirectory\Update-FsLogixClient-$dateandtime.log" -append
 $ProgressPreference = 'SilentlyContinue' 
 
 #Starting processing
@@ -80,6 +90,15 @@ if ($InstalledFSLogixVersion -ne $FsLogixDownloadVersion) {
                 Write-Output "Update Completed. Checking the current version in the registry."
                 $AfterInstallVersion = Get-ChildItem -Path $RegPaths | Get-ItemProperty | Where-Object { $_.DisplayName -match 'Microsoft FSLogix Apps' } | Select-Object -ExpandProperty 'DisplayVersion' | Get-Unique
                 Write-Output "Version after install is $AfterInstallVersion"
+                # Checking if the version is the same as the one downloaded and cleaning up the files if it's correct
+                if ($AfterInstallVersion -eq $FsLogixDownloadVersion) {
+                    Write-Output "Version after install is the same as the downloaded version. Cleaning up the files"
+                    Remove-Item -Path $InstallerOutputfile -Force
+                    Remove-Item -Path "$WorkingDirectory\$FsLogixDownloadFilenameWithoutExtension" -Recurse -Force
+                }
+                else {
+                    throw "Version after install is not the same as the downloaded version. Something went wrong"
+                }
             }
             catch {
                 throw "FSLogix failed to install $_"
