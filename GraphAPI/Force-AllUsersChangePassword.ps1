@@ -1,7 +1,7 @@
 cls
 
 Connect-MgGraph -Scopes Directory.AccessAsUser.All, Directory.ReadWrite.All, User.ReadWrite.All
-Select-MgProfile Beta
+#Select-MgProfile Beta
 
 $UsersToChangePassword = Get-MgUser -All -Property UserPrincipalName, Id
 
